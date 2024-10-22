@@ -1,0 +1,307 @@
+.home {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .welcome-message {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Parisienne', cursive;
+    font-size: 1.2em;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .welcome-message h1 {
+    font-size: 1.5em; /* Reduced font size for better mobile display */
+    margin-bottom: 10px;
+    color: #004d40;
+  }
+  
+  .welcome-message p {
+    font-size: 1em; /* Adjusted font size for mobile */
+    line-height: 1.5;
+  }
+  
+  @keyframes deModern {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+  }
+  
+  .recently-added, .bestsellers {
+    background-color: #e0f7fa;
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  
+  .recently-added h2, .bestsellers h2 {
+    font-size: 1.5em; /* Reduced font size for better mobile display */
+    margin-bottom: 20px;
+    color: #004d40;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+    border-bottom: 2px solid #004d40;
+    display: inline-block;
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .product-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .product-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 100%; /* Full width on mobile */
+    max-width: 300px; /* Limit max width for larger screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .product-image {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  
+  .buy-now {
+    background-color: #004d40 !important;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buy-now:hover {
+    background-color: #1b6e61 !important;
+  }
+  
+  /* Media query for mobile devices */
+  @media (max-width: 768px) {
+    .welcome-message h1 {
+      font-size: 2em; /* Further reduce heading size on smaller screens */
+    }
+  
+    .product-item {
+      width: 100%; /* Ensure full width on smaller screens */
+      max-width: 100%; /* Remove max width restriction */
+      margin: 10px 0 !important; /* Add margin from top and bottom */
+    }
+    .product-list {
+      justify-content: center; /* Center items on smaller screens */
+      margin-top: 10px; /* Add margin to separate from the welcome message */
+    }
+  
+    .recently-added h2, .bestsellers h2 {
+      font-size: 2em; /* Further reduce heading size on smaller screens */
+    }
+  
+    .welcome-message p {
+      font-size: 1.2em; /* Adjust font size for better readability */
+    }
+  }
+  
+  
+/* General Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #e0f7fa; /* Light cyan */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    flex-wrap: wrap;
+  }
+  
+  /* Left Section: Logo */
+  .header-left {
+    flex: 1;
+    text-align: left;
+    margin-left: 1rem;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00796b; /* Teal */
+    text-decoration: none;
+  }
+  
+  /* Center Section: Search Bar */
+  .header-center {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .search-bar-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 50px;
+    width: 100%;
+    max-width: 400px; /* Adjust the size of the search bar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar {
+    border: none;
+    flex-grow: 1;
+    outline: none;
+    font-size: 14px;
+    padding: 5px;
+    color: #00796b;
+  }
+  
+  .search-icon {
+    color: #00796b;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  /* Right Section: Cart, Login, Signup */
+  .header-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align items to the right */
+    gap: 15px; /* Add space between items */
+  }
+  
+  .auth-link, .cart, .shop-link, .home-link {
+    text-decoration: none;
+    color: #004d40;
+    font-weight: 400; /* Corrected font-weight */
+    font-size: 1rem;
+    padding: 5px 0px; /* Adjusted padding for better spacing */
+    border-radius: 5px;
+    padding: 5px !important;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for color */
+  }
+  
+  .auth-link:hover, .cart:hover, .shop-link:hover, .home-link:hover {
+    background-color: #00796b;
+    color: white;
+    border-color: #00796b; /* Add border color on hover for better effect */
+  }
+  
+  /* Responsive Design for Tablets and Mobile Devices */
+  @media (max-width: 768px) {
+    .header {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .header-left, .header-right {
+      flex: 100%;
+      text-align: center;
+      justify-content: center; /* Center items on smaller screens */
+    }
+  
+    .search-bar-container {
+      max-width: 100%;
+      margin: 10px 0;
+    }
+  
+    .auth-link, .cart, .shop-link, .home-link {
+      margin: 5px 0; /* Adjust margin for better spacing on small screens */
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .logo {
+      font-size: 1.5rem;
+    }
+  
+    .search-bar-container {
+      padding: 5px 10px;
+    }
+  
+    .search-bar {
+      font-size: 12px;
+    }
+  
+    .auth-link, .cart, .shop-link, .home-link {
+      font-size: 0.85rem;
+      padding: 6px 10px;
+    }
+  }
+
+  
+  .mySwiper {
+    width: 100%;
+    height: auto; /* Allow the swiper to adjust based on image content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Hide any overflow outside the swiper bounds */
+  }
+  
+  .mySwiper .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mySwiper .swiper-slide img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* Ensure full image visibility */
+    display: block; /* Ensure no image gaps */
+  }
+  
+  /* Responsive height adjustments for mobile */
+  @media (max-width: 768px) {
+    .mySwiper {
+      height: auto;
+    }
+  
+    .mySwiper .swiper-slide img {
+      width: 100%;
+      height: auto; /* Maintain aspect ratio and avoid extra height */
+      object-fit: contain;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .mySwiper {
+      height: 30vw; /* Adjust this based on your images' aspect ratio */
+    }
+  
+    .mySwiper .swiper-slide img {
+      width: 100%;
+      height: 100%; /* Ensure image fills the swiper area */
+      object-fit: contain; /* Ensure no cropping of the image */
+    }
+  }
+
+  
+
+
+

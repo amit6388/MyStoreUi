@@ -1,0 +1,148 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box; /* Add this to avoid overflow issues */
+}
+
+.container1 {
+    display: flex;
+    height: 100vh; /* Full height of the screen */
+    width: 100vw; /* Full width of the screen */
+}
+
+main {
+    width: 100%;
+    padding: 10px;
+    overflow-y: auto; /* Allow scrolling if the content is too large */
+}
+
+.sidebar {
+    background: #000;
+    color: #fff;
+    height: 100vh; /* Full height of the screen */
+    width: 200px;
+    transition: all 0.5s ease; /* Smooth transition for sidebar toggling */
+}
+
+.top_section {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+}
+
+.logo {
+    font-size: 50px;
+}
+
+.bars {
+    display: flex;
+    font-size: 25px;
+    margin-left: 50px;
+    cursor: pointer; /* Makes it clear the bars are clickable */
+}
+
+.link {
+    display: flex;
+    color: #fff;
+    padding: 10px 15px;
+    gap: 15px;
+    transition: all 0.5s;
+}
+
+.link:hover {
+    background: lightskyblue;
+    color: #000;
+    transition: all 0.5s;
+}
+
+.active {
+    background: lightskyblue;
+    color: #000;
+}
+
+.icon, .link_text {
+    font-size: 20px;
+}
+
+  .link{
+    text-decoration: none !important;
+}
+.linkLogOut {
+    display: flex;
+    color: #fff;
+    padding: 10px 15px;
+    gap: 15px;
+    transition: all 0.5s;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.nav-dropdown-custom {
+    background: #e0f7fa !important;
+    color: #00796b !important;
+    cursor: pointer;
+  }
+
+  .nav-dropdown-custom :hover {
+    background: #e0f7fa !important;
+    color: #00796b !important;
+    cursor: pointer;
+  }
+.NavDropdown{
+    background: #e0e7fa !important;
+    color: #00796b !important;
+}
+
+
+/* *{
+    margin:0;
+    padding:0;
+    text-decoration: none;
+}
+.container1{
+    display:flex;
+}
+main{
+    width: 100%;
+    padding: 20px;
+}
+.sidebar{
+    background: #000;
+    color: #fff;
+    height: 100vh;
+    width: 200px;
+    transition: all 0.5s;
+}
+.top_section{
+    display: flex;
+    align-items:center;
+    padding:20px 15px;
+}
+.logo{
+    font-size: 30px;
+}
+.bars{
+    display: flex;
+    font-size: 25px;
+    margin-left: 50px;
+}
+.link{
+    display: flex;
+    color: #fff;
+    padding: 10px 15px;
+    gap: 15px;
+    transition: all 0.5s;
+}
+.link:hover{
+    background:lightskyblue;
+    color: #000;
+    transition: all 0.5s;
+}
+.active{
+    background: lightskyblue;
+    color: #000;
+}
+.icon, .link_text{
+    font-size: 20px;
+} */

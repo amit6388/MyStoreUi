@@ -1,0 +1,44 @@
+.b1{
+    
+    height: 400px;
+    border-radius: 18px;
+      
+}
+
+.card {
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 15px; 
+    margin: 10px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.2s; 
+  }
+  
+  .card:hover {
+    transform: scale(1.05); 
+  }
+
+
+  .addProductbtn {
+    background: #00796b;
+    color: white;
+    width: 220px;
+    text-align: center;
+    padding: 10px 20px; /* Add padding for a better click area */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Adjust font size for readability */
+    font-weight: bold; /* Make the text bold */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.addProductbtn:hover {
+    background: #005f56; /* Darken background on hover */
+    transform: translateY(-2px); /* Slightly lift the button on hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Deepen shadow on hover */
+}
+
+ 
+  
