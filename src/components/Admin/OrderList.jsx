@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, ToastContainer, Toast } from 'react-bootstrap';
+import { Table, Button, Modal, ToastContainer, Toast, Form } from 'react-bootstrap';
 import Sidebar from '../SideBar/Sidebar';
-import { adminGetOrder } from '../services';
+import { adminGetOrder, updateOrderStatusAPI } from '../services'; // Import your API services
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+// import { LiaRupeeSignSolid } from "react-icons/lia";
 
 function OrderList() {
   const [orders, setOrders] = useState([]);
@@ -9,6 +13,24 @@ function OrderList() {
   const [showModal, setShowModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
+
+  const orderStatusOptions = ['confirmed', 'shipped', 'delivered', 'cancelled'];
+  const paymentStatusOptions = ['pending', 'completed', 'failed'];
+
+  // Yup validation schema
+  const validationSchema = Yup.object().shape({
+    orderStatus: Yup.string().oneOf(orderStatusOptions, 'Invalid Order Status').required('Order status is required'),
+    paymentStatus: Yup.string().oneOf(paymentStatusOptions, 'Invalid Payment Status').required('Payment status is required'),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -35,6 +57,11 @@ function OrderList() {
   const handleShowModal = (order) => {
     setSelectedOrder(order);
     setShowModal(true);
+    // Reset the form with prefilled values from the selected order
+    reset({
+      orderStatus: order.orderStatus || '', // Default to empty string if not provided
+      paymentStatus: order.paymentStatus || '', // Default to empty string if not provided
+    });
   };
 
   const handleCloseModal = () => {
@@ -42,35 +69,68 @@ function OrderList() {
     setSelectedOrder(null);
   };
 
+  const onSubmit = async (data) => {
+    const isConfirmed = window.confirm("Are you sure you want to update this order?");
+    if (!isConfirmed) {
+      return; // Exit if the user cancels
+    }
+    try {
+      const updatedOrder = {
+        orderStatus: data.orderStatus,
+        paymentStatus: data.paymentStatus,
+      };
+
+      const result = await updateOrderStatusAPI(selectedOrder._id, updatedOrder);
+      if (result?.code === 200) {
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === selectedOrder._id
+              ? { ...order, orderStatus: data.orderStatus, paymentStatus: data.paymentStatus }
+              : order
+          )
+        );
+        setToastMessage('Order updated successfully');
+        setToastVisible(true);
+        handleCloseModal();
+      } else {
+        setToastMessage('Failed to update the order.');
+        setToastVisible(true);
+      }
+    } catch (error) {
+      setToastMessage('Error updating the order.');
+      setToastVisible(true);
+    }
+  };
+
   const styles = {
     container: {
       background: '#e0f7fa',
       color: '#00796b',
-      padding: '20px'
+      padding: '20px',
     },
     modalHeader: {
       background: '#e0f7fa',
-      color: '#00796b'
+      color: '#00796b',
     },
     modalBody: {
       background: '#e0f7fa',
-      color: '#00796b'
+      color: '#00796b',
     },
     centeredHeading: {
       textAlign: 'center',
-      color: '#00796b'
+      color: '#00796b',
     },
     statusText: {
-      color: 'red'
+      color: 'red',
     },
     tableContainer: {
       maxHeight: '300px',
-      overflowY: 'auto'
+      overflowY: 'auto',
     },
     totalPrice: {
       textAlign: 'right',
-      fontWeight: 'bold'
-    }
+      fontWeight: 'bold',
+    },
   };
 
   return (
@@ -97,7 +157,7 @@ function OrderList() {
                 <td>{order.orderStatus}</td>
                 <td>{order.paymentStatus}</td>
                 <td>
-                  <Button variant="info" onClick={() => handleShowModal(order)}>
+                  <Button variant="info" style={styles.modalHeader} onClick={() => handleShowModal(order)}>
                     View Details
                   </Button>
                 </td>
@@ -138,20 +198,6 @@ function OrderList() {
                   </tr>
                 </tbody>
               </Table>
-
-              {/* Display User Contact Information */}
-              <table className="table text-center">
-                <tbody>
-                  <tr>
-                    <td>
-                      <strong>Email:</strong> {selectedOrder.userId.email}
-                    </td>
-                    <td>
-                      <strong>Contact No:</strong> {selectedOrder.userId.contact}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
 
               <h5>Products</h5>
               <div style={styles.tableContainer}>
@@ -196,10 +242,13 @@ function OrderList() {
                     </tr>
                   </tbody>
                 </Table>
+               
               </div>
-
-              {/* Centered Status Headings with Custom Colors */}
-              <h5 style={styles.centeredHeading}>
+              
+              {/* Centered Status Headings with Custom Colors
+              */}
+<div>
+<h5 style={styles.centeredHeading}>
                 Order Status: <span style={styles.statusText}>{selectedOrder.orderStatus}</span>
               </h5>
               <h5 style={styles.centeredHeading}>
@@ -208,6 +257,41 @@ function OrderList() {
               <h5 style={styles.centeredHeading}>
                 Order Date: <span style={styles.statusText}>{new Date(selectedOrder.createdAt).toLocaleString()}</span>
               </h5>
+</div>
+
+              {/* Status Update Form */}
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form.Group controlId="formOrderStatus">
+                  <Form.Label>Order Status</Form.Label>
+                  <Form.Control as="select" {...register('orderStatus')} isInvalid={!!errors.orderStatus}>
+                    <option value="">Select Status</option>
+                    {orderStatusOptions.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Form.Control.Feedback type="invalid">{errors.orderStatus?.message}</Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group controlId="formPaymentStatus">
+                  <Form.Label>Payment Status</Form.Label>
+                  <Form.Control as="select" {...register('paymentStatus')} isInvalid={!!errors.paymentStatus}>
+                    <option value="">Select Payment Status</option>
+                    {paymentStatusOptions.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Form.Control.Feedback type="invalid">{errors.paymentStatus?.message}</Form.Control.Feedback>
+                  
+                </Form.Group>
+                <br/>
+                <Button style={styles.modalHeader} variant="primary" type="submit">
+                  Update Order Status
+                </Button>
+              </Form>
             </div>
           )}
         </Modal.Body>

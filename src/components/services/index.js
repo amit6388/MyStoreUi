@@ -217,3 +217,19 @@ export const  GetUserOrder = async (userId) => {
       console.log(err);
     }
   }
+
+  export const updateOrderStatusAPI = async (id,payload) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/update-status/${id}`,payload,
+         {
+        headers: {
+             "Content-Type": "application/json",
+        }
+      });
+      return response.data; 
+    } catch (err) {
+      console.log("Error deleting product: ", err);
+      throw err; 
+    }
+  };

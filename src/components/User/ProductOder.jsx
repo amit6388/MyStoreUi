@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, ToastContainer, Toast } from 'react-bootstrap';
 import Sidebar from '../SideBar/Sidebar';
-import { GetUserOrder } from '../services';
+import { GetUserOrder, updateOrderStatusAPI } from '../services'; // Ensure updateOrderStatusAPI is imported
 
-function ProductOder() {
+function ProductOrder() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -43,6 +43,39 @@ function ProductOder() {
     setSelectedOrder(null);
   };
 
+  const handleCancelOrder = async () => {
+    // Confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to cancel this order?");
+    if (!isConfirmed) {
+      return; // Exit if the user cancels
+    }
+  
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const payload = {
+        paymentStatus: selectedOrder.paymentStatus, // Send prefilled payment status
+        orderStatus: "Cancelled" // Update order status to "Cancelled"
+      };
+      const result = await updateOrderStatusAPI(selectedOrder._id, payload);
+      if (result?.code === 200) {
+        // Update the orders state to reflect the cancelled order
+        setOrders(orders.map(order => 
+          order._id === selectedOrder._id ? { ...order, orderStatus: "Cancelled" } : order
+        ));
+        setToastMessage('Order cancelled successfully.');
+      } else {
+        setToastMessage(result?.message || 'Failed to cancel order.');
+      }
+    } catch (err) {
+      console.error(err);
+      setToastMessage('An error occurred while cancelling the order.');
+    } finally {
+      setToastVisible(true);
+      handleCloseModal(); // Close the modal after attempting to cancel
+    }
+  };
+  
+
   const styles = {
     container: {
       background: '#e0f7fa',
@@ -76,13 +109,12 @@ function ProductOder() {
 
   return (
     <Sidebar>
-      <div style={styles.container}>
-        <h2>Order List</h2>
+      <div className='pt-5' style={styles.container}>
+        <h2>My Order List</h2>
         <Table striped bordered hover variant="light" responsive>
           <thead>
             <tr>
               <th>Sr. No.</th>
-             
               <th>Total Price</th>
               <th>Order Status</th>
               <th>Payment Status</th>
@@ -93,12 +125,11 @@ function ProductOder() {
             {orders.map((order, index) => (
               <tr key={order._id}>
                 <td>{index + 1}</td>
-                 
                 <td>${order.totalPrice.toFixed(2)}</td>
                 <td>{order.orderStatus}</td>
                 <td>{order.paymentStatus}</td>
                 <td>
-                  <Button variant="info"  style={styles.modalHeader} onClick={() => handleShowModal(order)}>
+                  <Button variant="info" style={styles.modalHeader} onClick={() => handleShowModal(order)}>
                     View Details
                   </Button>
                 </td>
@@ -209,6 +240,11 @@ function ProductOder() {
               <h5 style={styles.centeredHeading}>
                 Order Date: <span style={styles.statusText}>{new Date(selectedOrder.createdAt).toLocaleString()}</span>
               </h5>
+
+              {/* Cancel Order Button */}
+              <Button variant="danger" onClick={handleCancelOrder}>
+                Cancel Order
+              </Button>
             </div>
           )}
         </Modal.Body>
@@ -222,4 +258,4 @@ function ProductOder() {
   );
 }
 
-export default ProductOder;
+export default ProductOrder;

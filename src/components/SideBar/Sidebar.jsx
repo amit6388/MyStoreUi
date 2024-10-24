@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'; 
 import {
     FaTh,
-    FaBars,
+    FaBars,FaHome,
     FaUserAlt,
     FaRegChartBar,
     FaCommentAlt,
@@ -28,9 +28,14 @@ const Sidebar = ({children}) => {
     },[])
     const Admin=[
         {
+            path:"/",
+            name:"GoHome",
+            icon:<FaHome/>
+        },
+        {
             path:"/admin/add-product",
             name:"AddProduct",
-            icon:<FaTh/>
+            icon:<FaHome/>
         },
         // {
         //     path:"/admin/addcart-list",
@@ -51,6 +56,11 @@ const Sidebar = ({children}) => {
     ]
 
     const User=[
+        {
+            path:"/",
+            name:"GoHome",
+            icon:<FaHome/>
+        },
         {
             path:"/user/product-list",
             name:"Shop",

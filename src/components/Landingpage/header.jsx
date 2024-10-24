@@ -1,10 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './css/landingpage.css';
-import { FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const Header = () => {
+  const userType = JSON.parse(localStorage.getItem('userType'));
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    const redirectPath = `/${userType}/login`;
+    // Clear token and userType
+    localStorage.removeItem('token');
+    localStorage.removeItem('userType');
+    // Redirect to login page based on user type
+    navigate(redirectPath);
+  };
+
   return (
     <header className="header">
       {/* Left: Logo */}
@@ -24,23 +36,27 @@ const Header = () => {
       <div className="header-right">
         <Link to="/" className="home-link">Home</Link>
         <Link to="/shop" className="shop-link">Shop</Link>
-        <Link to="/user/register" className="auth-link">SignUp</Link>
+        {!userType && <Link to="/user/register" className="auth-link">SignUp</Link>}
 
-        {/* Using NavDropdown from Bootstrap */}
-        <NavDropdown
-          title="Login"
-          id="navbarScrollingDropdown"
-          className="nav-dropdown-custom"
-        >
-          <NavDropdown.Item as={Link} to="/user/login" className="nav-dropdown-custom">
-            User
-          </NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/admin/login" className="nav-dropdown-custom">
-            Admin
-          </NavDropdown.Item>
-        </NavDropdown>
-
-
+        {/* Conditional rendering for Dashboard or Login Dropdown */}
+        {!userType ? (
+          <NavDropdown title="Login" id="navbarScrollingDropdown" className="nav-dropdown-custom">
+            <NavDropdown.Item as={Link} to="/user/login" className="nav-dropdown-custom">User</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/admin/login" className="nav-dropdown-custom">Admin</NavDropdown.Item>
+          </NavDropdown>
+        ) : (
+          <>
+            <Link
+              to={userType === 'admin' ? '/admin/add-product' : '/user/product-list'}
+              className="auth-link"
+            >
+              Dashboard
+            </Link>
+            <Link to={`/${userType}/login`} onClick={handleLogOut} className="auth-link">
+              LogOut
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
